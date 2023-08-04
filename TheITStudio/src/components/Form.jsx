@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import styleSheet from "../css/style.jsx";
 import { userContext } from "../utility/userContext.js";
 import axios from "axios";
-import {BACKEND_PROXY_URL} from '@env'
+import {BACKEND_PROXY_URL, COMPANY_NAME} from '@env'
 
 function Form({navigation}) {
   const [username, setusername] = useState('');
@@ -28,7 +28,7 @@ function Form({navigation}) {
 
   return (
     <View style={styleSheet.container}>
-      <Text style={styleSheet.heading}>TheITStudio</Text>
+      <Text style={styleSheet.heading}>{COMPANY_NAME}</Text>
       <View style={styleSheet.form}>
         <TextInput
           placeholder="Enter Name"
