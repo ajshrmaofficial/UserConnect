@@ -28,7 +28,7 @@ function Form({navigation}) {
     setMobile(phone);
   };
 
-  const submitData = async () => {
+  const submitData = () => {
     if (error) return;
     if (!username || !email || !mobile || !message) {
       setError('Please fill all the fields');
@@ -36,11 +36,7 @@ function Form({navigation}) {
     }
     setUserData({username, email, mobile, message});
     try {
-      const response = await axios.post(
-        `${BACKEND_PROXY_URL}/api/sendMail`,
-        userData,
-      );
-      console.log(response.data);
+      axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
     } catch (err) {
       console.log(err);
       setError('Something went wrong');
@@ -65,10 +61,12 @@ function Form({navigation}) {
           defaultCode="IN"
           layout="first"
           autoFocus
-          placeholder='Enter Mobile'
+          placeholder="Enter Mobile"
           containerStyle={styleSheet.phoneContainer}
           textContainerStyle={styleSheet.phoneTextContainer}
-          onChangeFormattedText={text => {validatePhone(text)}}
+          onChangeFormattedText={text => {
+            validatePhone(text);
+          }}
         />
         <TextInput
           placeholder="Enter Email"

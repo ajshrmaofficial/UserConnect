@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-app.post('/api/sendMail', async(req, res) => {
+app.post('/api/sendMail', (req, res) => {
     const userData = req.body
     if(!userData || !userData.username || !userData.mobile || !userData.email || !userData.message) res.send('Please fill all the fields')
     console.log(userData)
