@@ -28,7 +28,7 @@ function Form({navigation}) {
     setMobile(phone);
   };
 
-  const submitData = () => {
+  const submitData = async() => {
     if (error) return;
     if (!username || !email || !mobile || !message) {
       setError('Please fill all the fields');
@@ -36,7 +36,8 @@ function Form({navigation}) {
     }
     setUserData({username, email, mobile, message});
     try {
-      axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
+      const response = await axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
+      console.log(response.data);
     } catch (err) {
       console.log(err);
       setError('Something went wrong');
