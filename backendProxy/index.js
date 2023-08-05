@@ -25,8 +25,10 @@ app.post("/api/sendMail", async (req, res) => {
     !userData.mobile ||
     !userData.email ||
     !userData.message
-  )
+  ){
     res.send("Please fill all the fields");
+    return
+  }
   console.log(userData);
   const message =
     "From: " +
@@ -50,7 +52,7 @@ app.post("/api/sendMail", async (req, res) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    res.send("Mail sent successfully");
+    res.send("Mail sent successfully" + info);
   } catch (error) {
     res.send("Error sending mail");
   }
