@@ -43,6 +43,7 @@ function Form({navigation}) {
       console.log(response.data);
     } catch (err) {
       console.log(err);
+      setError('Something went wrong');
       return;
     }
     navigation.navigate('SubmitScreen');
