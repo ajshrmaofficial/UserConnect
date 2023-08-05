@@ -66,6 +66,18 @@ const styleSheet = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+  phoneContainer: {
+    width: '100%',
+    marginBottom: 10,
+    borderRadius: 8,
+    backgroundColor: '#DBDBD6',
+  },
+  phoneTextContainer: {
+    borderRadius: 8,
+    backgroundColor: '#DBDBD6',
+    fontSize: 18,
+    color: 'black',
+  },
   error: {
     color: 'red',
     fontSize: 13,

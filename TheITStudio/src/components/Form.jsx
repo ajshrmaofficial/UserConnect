@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
-import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import styleSheet from "../css/style.jsx";
-import { userContext } from "../utility/userContext.js";
-import axios from "axios";
-import {BACKEND_PROXY_URL, COMPANY_NAME} from '@env'
+import {useContext, useRef, useState} from 'react';
+import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import PhoneInput from 'react-native-phone-number-input';
+import styleSheet from '../css/style.jsx';
+import {userContext} from '../utility/userContext.js';
+import axios from 'axios';
+import {BACKEND_PROXY_URL, COMPANY_NAME} from '@env';
 
 function Form({navigation}) {
   const [username, setusername] = useState('');
@@ -11,19 +12,40 @@ function Form({navigation}) {
   const [mobile, setMobile] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const {userData, setUserData} = useContext(userContext)
+  const {userData, setUserData} = useContext(userContext);
 
-  const submitData = async() => {
-    setUserData({username, email, mobile, message})
+  const validateMail = email => {
+    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (re.test(email)) setError('');
+    else setError('Invalid Email');
+    setEmail(email);
+  };
+
+  const validatePhone = phone => {
+    const re = /^\+[1-9]{1,3}[\s-]?\d{9,15}$/;
+    if (re.test(phone)) setError('');
+    else setError('Invalid Phone Number');
+    setMobile(phone);
+  };
+
+  const submitData = async () => {
+    if (error) return;
+    if (!username || !email || !mobile || !message) {
+      setError('Please fill all the fields');
+      return;
+    }
+    setUserData({username, email, mobile, message});
     try {
-      const response = await axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
+      const response = await axios.post(
+        `${BACKEND_PROXY_URL}/api/sendMail`,
+        userData,
+      );
       console.log(response.data);
+    } catch (err) {
+      console.log(err);
+      return;
     }
-    catch(err) {
-      console.log(err)
-      return
-    }
-    navigation.navigate('SubmitScreen')
+    navigation.navigate('SubmitScreen');
   };
 
   return (
@@ -37,17 +59,19 @@ function Form({navigation}) {
           style={styleSheet.formInput}
           placeholderTextColor="#000000"
         />
-        <TextInput
-          placeholder="Enter Mobile"
-          onChangeText={text => setMobile(text)}
-          value={mobile}
-          style={styleSheet.formInput}
-          keyboardType="numeric"
-          placeholderTextColor="black"
+        <PhoneInput
+          defaultValue={mobile}
+          defaultCode="IN"
+          layout="first"
+          autoFocus
+          placeholder='Enter Mobile'
+          containerStyle={styleSheet.phoneContainer}
+          textContainerStyle={styleSheet.phoneTextContainer}
+          onChangeFormattedText={text => {validatePhone(text)}}
         />
         <TextInput
           placeholder="Enter Email"
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => validateMail(text)}
           value={email}
           style={styleSheet.formInput}
           placeholderTextColor="black"
