@@ -3,7 +3,6 @@ import {View, TextInput, TouchableOpacity, Text} from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import styleSheet from '../css/style.jsx';
 import {userContext} from '../utility/userContext.js';
-import axios from 'axios';
 import {BACKEND_PROXY_URL, COMPANY_NAME} from '@env';
 
 function Form({navigation}) {
@@ -36,7 +35,14 @@ function Form({navigation}) {
     }
     setUserData({username, email, mobile, message});
     try {
-      const response = await axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
+      // const response = await axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
+      const response = await fetch(`${BACKEND_PROXY_URL}/api/sendMail`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
       console.log(response.data);
     } catch (err) {
       console.log(err);
