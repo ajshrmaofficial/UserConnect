@@ -21,12 +21,12 @@ app.post('/api/sendMail', async(req, res) => {
     const userData = req.body
     if(!userData || !userData.username || !userData.mobile || !userData.email || !userData.message) res.send('Please fill all the fields')
     console.log(userData)
-    const message = 'From: ' + userData.username + '\n' + 'Mobile: ' + userData.mobile + '\n' + 'Email: ' + userData.email + '\n' + userData.message
+    const message = 'From: ' + userData.username + '\n' + 'Mobile: ' + userData.mobile + '\n' + 'Email: ' + userData.email + '\n' + 'Message: ' + userData.message
 
     const mailOptions = {
         from: process.env.FROM_EMAIL,
         to: process.env.TO_EMAIL,
-        subject: 'Testing Mail Sending app by Ajay Sharma',
+        subject: 'User Feedback from ' + userData.username,
         text: message
     }
 
