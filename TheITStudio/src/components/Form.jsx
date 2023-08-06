@@ -6,25 +6,21 @@ import {userContext} from '../utility/userContext.js';
 import {BACKEND_PROXY_URL, COMPANY_NAME} from '@env';
 
 function Form({navigation}) {
-  const [username, setusername] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const {userData, setUserData} = useContext(userContext);
+  const {username, email, mobile, message} = userData;
+  const [error, setError] = useState('');
 
-  const validateMail = email => {
-    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (re.test(email)) setError('');
-    else setError('Invalid Email');
-    setEmail(email);
+  const validator = (text, type) => {
+    let re;
+    if (type == 'email') re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    else if (type == 'mobile') re = /^\+[1-9]{1,3}[\s-]?\d{9,15}$/;
+    if (re.test(text)) setError('');
+    else setError(`Invalid ${type}`);
+    setUserData({...userData, [type]: text});
   };
 
-  const validatePhone = phone => {
-    const re = /^\+[1-9]{1,3}[\s-]?\d{9,15}$/;
-    if (re.test(phone)) setError('');
-    else setError('Invalid Phone Number');
-    setMobile(phone);
+  const onTextChange = (text, type) => {
+    setUserData({...userData, [type]: text});
   };
 
   const submitData = async() => {
@@ -35,7 +31,6 @@ function Form({navigation}) {
     }
     setUserData({username, email, mobile, message});
     try {
-      // const response = await axios.post(`${BACKEND_PROXY_URL}/api/sendMail`, userData);
       const response = await fetch(`${BACKEND_PROXY_URL}/api/sendMail`, {
         method: 'POST',
         headers: {
@@ -43,12 +38,14 @@ function Form({navigation}) {
         },
         body: JSON.stringify(userData),
       });
-      console.log(response.data);
+      const data = await response.text();
+      console.log(data);
     } catch (err) {
       console.log(err);
       setError('Something went wrong');
       return;
     }
+    setUserData({username: '', email: '', mobile: '', message: ''});
     navigation.navigate('SubmitScreen');
   };
 
@@ -58,7 +55,7 @@ function Form({navigation}) {
       <View style={styleSheet.form}>
         <TextInput
           placeholder="Enter Name"
-          onChangeText={text => setusername(text)}
+          onChangeText={text => onTextChange(text, 'username')}
           value={username}
           style={styleSheet.formInput}
           placeholderTextColor="#000000"
@@ -72,19 +69,19 @@ function Form({navigation}) {
           containerStyle={styleSheet.phoneContainer}
           textContainerStyle={styleSheet.phoneTextContainer}
           onChangeFormattedText={text => {
-            validatePhone(text);
+            validator(text, 'mobile');
           }}
         />
         <TextInput
           placeholder="Enter Email"
-          onChangeText={text => validateMail(text)}
+          onChangeText={text => validator(text, 'email')}
           value={email}
           style={styleSheet.formInput}
           placeholderTextColor="black"
         />
         <TextInput
           placeholder="Enter Your Message"
-          onChangeText={text => setMessage(text)}
+          onChangeText={text => onTextChange(text, 'message')}
           value={message}
           style={styleSheet.formInput}
           placeholderTextColor="black"
