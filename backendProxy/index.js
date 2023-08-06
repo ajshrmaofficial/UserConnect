@@ -52,7 +52,7 @@ app.post("/api/sendMail", async (req, res) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    res.send("Mail sent successfully" + info);
+    res.send("Mail sent successfully");
   } catch (error) {
     res.send("Error sending mail");
   }
