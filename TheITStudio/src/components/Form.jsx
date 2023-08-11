@@ -43,9 +43,9 @@ function Form({navigation}) {
     } catch (err) {
       console.log(err);
       setError('Something went wrong');
+      setUserData({username: '', email: '', mobile: '', message: ''});
       return;
     }
-    setUserData({username: '', email: '', mobile: '', message: ''});
     navigation.navigate('SubmitScreen');
   };
 

@@ -7,6 +7,7 @@ function SubmitScreen({navigation}){
     const {userData, setUserData} = useContext(userContext);
 
     useEffect(()=>{
+        setUserData({username: '', email: '', mobile: '', message: ''});
         setTimeout(()=>{
             navigation.navigate('Home')
         }, 3000)
