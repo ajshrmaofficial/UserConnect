@@ -30,6 +30,7 @@ const styleSheet = StyleSheet.create({
   welcomeBtn: {
     width: 70,
     height: 70,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
@@ -37,6 +38,17 @@ const styleSheet = StyleSheet.create({
     position: 'absolute',
     bottom: "10%",
     backgroundColor: '#0A79DF',
+  },
+  forwardArrow: {
+    width: 0,
+    height: 0,
+    borderTopWidth: 15,
+    borderTopColor: 'transparent',
+    borderLeftWidth: 20,
+    borderLeftColor: 'black',
+    borderBottomWidth: 15,
+    borderBottomColor: 'transparent',
+    left: 2,
   },
   form: {
     width: '90%',

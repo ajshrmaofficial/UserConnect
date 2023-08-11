@@ -9,7 +9,7 @@ function Welcome({navigation}){
             <Text style={styleSheet.subHeading}>User Connect</Text>
             <Text style={styleSheet.secondaryText}>Connect with {COMPANY_NAME} with your feedback.</Text>
             <TouchableOpacity style={styleSheet.welcomeBtn} onPress={()=>navigation.navigate('Form')}>
-                <Text style={styleSheet.secondaryText}></Text>
+                <Text style={styleSheet.forwardArrow}></Text>
             </TouchableOpacity>
         </View>
     )
